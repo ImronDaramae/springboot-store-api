@@ -9,21 +9,19 @@ import java.util.*
 class ProductService(private val productRepository: ProductRepository) {
 
     // Get all products
-    fun getAllProducts(): List<Product> = productRepository.findAll() // select * from products
+    // select * from products
+    fun getAllProducts(): List<Product> = productRepository.findAll()
 
     // Get product by id
-    fun getProductById(id: Int): Optional<Product> {
-        return if (productRepository.existsById(id)) {
-            productRepository.findById(id) // select * from products where id = ?
-        } else {
-            throw RuntimeException("Product not found with id: $id")
-        }
-    }
+    // select * from products where id = ?
+    fun getProductById(id: Int): Optional<Product> = productRepository.findById(id)
 
     // Create product
+    // insert into products (product_name, product_price, product_quantity, product_image) values (?, ?, ?, ?)
     fun createProduct(product: Product): Product = productRepository.save(product)
 
     // Update Product
+    // update products set product_name = ?, product_price = ?, product_quantity = ?, product_image = ? where id = ?
     fun updateProduct(id: Int, updateProduct: Product): Product {
         return if (productRepository.existsById(id)) {
             updateProduct.id = id
@@ -34,6 +32,7 @@ class ProductService(private val productRepository: ProductRepository) {
     }
 
     // Delete Product
+    // delete from products where id = ?
     fun deleteProduct(id: Int) {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id)
