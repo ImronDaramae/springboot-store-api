@@ -48,11 +48,15 @@ class JwtUtil {
     }
 
     private fun doGenerateToken(claims: Map<String, Any>, subject: String): String {
+
+        val now = Date()
+        val validity = Date(now.time + expiration * 1000)
+
         return Jwts.builder()
             .setClaims(claims)
             .setSubject(subject)
-            .setIssuedAt(Date(System.currentTimeMillis()))
-            .setExpiration(Date(System.currentTimeMillis() + expiration * 1000))
+            .setIssuedAt(now)
+            .setExpiration(validity)
             .signWith(SignatureAlgorithm.HS512, secret)
             .compact()
     }
