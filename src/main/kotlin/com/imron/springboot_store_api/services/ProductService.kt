@@ -1,5 +1,6 @@
 package com.imron.springboot_store_api.services
 
+import com.imron.springboot_store_api.dto.ProductCategoryDTO
 import com.imron.springboot_store_api.models.Product
 import com.imron.springboot_store_api.repository.ProductRepository
 import org.springframework.beans.factory.annotation.Value
@@ -51,12 +52,12 @@ class ProductService(private val productRepository: ProductRepository) {
     // Get all products
     // select * from products
     // Get all products with pagination and search
-    fun getAllProducts(searchQuery: String?, selectedCategory: Int?, pageable: Pageable): Page<Product> {
+    fun getAllProducts(searchQuery: String?, selectedCategory: Int?, pageable: Pageable): Page<ProductCategoryDTO> {
         return productRepository.findBySearchQueryAndCategory(searchQuery, selectedCategory, pageable)
     }
 
     // Get product by id with category details
-    fun getProductByIdWithCategory(id: Int): Optional<Map<String, Any>> = productRepository.findProductWithCategory(id)
+    fun getProductByIdWithCategory(id: Int): Optional<ProductCategoryDTO> = productRepository.findProductWithCategory(id)
 
     // Create product
     // insert into products (product_name, product_price, product_quantity, product_image) values (?, ?, ?, ?)

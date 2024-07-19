@@ -1,5 +1,6 @@
 package com.imron.springboot_store_api.controllers
 
+import com.imron.springboot_store_api.dto.ProductCategoryDTO
 import com.imron.springboot_store_api.models.Product
 import com.imron.springboot_store_api.services.ProductService
 import io.swagger.v3.oas.annotations.Operation
@@ -34,7 +35,7 @@ class ProductController(private val productService: ProductService) {
         @RequestParam(value = "selectedCategory", required = false) selectedCategory: Int?
     ): ResponseEntity<Map<String, Any>> {
         val pageable: Pageable = PageRequest.of(page - 1, limit)
-        val productsPage: Page<Product> = productService.getAllProducts(searchQuery, selectedCategory, pageable)
+        val productsPage: Page<ProductCategoryDTO> = productService.getAllProducts(searchQuery, selectedCategory, pageable)
 
         val response = mapOf(
             "total" to productsPage.totalElements,
@@ -48,7 +49,7 @@ class ProductController(private val productService: ProductService) {
     // GET /api/products/{id}
     @Operation(summary = "Get product by id" , description = "Get product by id from database")
     @GetMapping("/{id}")
-    fun getProductById(@PathVariable id: Int): ResponseEntity<Map<String, Any>> {
+    fun getProductById(@PathVariable id: Int): ResponseEntity<ProductCategoryDTO> {
         val product = productService.getProductByIdWithCategory(id)
         return product.map { ResponseEntity.ok(it) }
             .orElseGet { ResponseEntity.notFound().build() }
